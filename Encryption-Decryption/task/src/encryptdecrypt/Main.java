@@ -7,34 +7,24 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String type = scanner.nextLine();
         String s = scanner.nextLine();
         int shift = Integer.parseInt(scanner.nextLine());
-        System.out.println(new Encryptor2(shift).encrypt(s));
+        String processed = new EncDec3().performOperation(type, s, shift);
+        System.out.println(processed);
     }
 }
 
-class Encryptor2 {
+class EncDec3 {
 
-    static final String abc = "abcdefghijklmnopqrstuvwxyz";
-    private final int shift;
-
-    public Encryptor2(int shift) {
-        this.shift = shift;
+    public String performOperation(String type, String s, int shift) {
+        return encDec(s, "enc".equals(type) ? shift : -shift);
     }
 
-    public String encrypt(String s) {
-        return s.chars()
-                .map(this::tryShift)
+    private String encDec(String s, int shift) {
+        return s.chars().map(i -> i + shift)
                 .mapToObj(i -> (char) i)
                 .map(String::valueOf)
                 .collect(Collectors.joining(""));
-    }
-
-    private int tryShift(int i) {
-        return i >= 'a' && i <= 'z' ? makeShift(i) : i;
-    }
-
-    private int makeShift(int i) {
-        return (i - 'a' + shift) % abc.length() + 'a';
     }
 }
