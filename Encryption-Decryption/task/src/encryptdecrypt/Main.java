@@ -1,28 +1,40 @@
 package encryptdecrypt;
 
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
 public class Main {
+
     public static void main(String[] args) {
-        String s = "we found a treasure!";
-        System.out.println(doEncrypt(simpleEncryptor, s));
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        int shift = Integer.parseInt(scanner.nextLine());
+        System.out.println(new Encryptor2(shift).encrypt(s));
+    }
+}
+
+class Encryptor2 {
+
+    static final String abc = "abcdefghijklmnopqrstuvwxyz";
+    private final int shift;
+
+    public Encryptor2(int shift) {
+        this.shift = shift;
     }
 
-    public static String doEncrypt(Encryptor encryptor, String s) {
-        return encryptor.encrypt(s);
+    public String encrypt(String s) {
+        return s.chars()
+                .map(this::tryShift)
+                .mapToObj(i -> (char) i)
+                .map(String::valueOf)
+                .collect(Collectors.joining(""));
     }
 
-    interface Encryptor {
-        String encrypt(String s);
+    private int tryShift(int i) {
+        return i >= 'a' && i <= 'z' ? makeShift(i) : i;
     }
 
-    public static final Encryptor simpleEncryptor = str -> {
-        char low = 'a';
-        char hi = 'z';
-        StringBuilder sb = new StringBuilder();
-        for (char c : str.toCharArray()) {
-            char c1 = c >= low && c <= hi ? (char) (low + hi - c) : c;
-            sb.append(c1);
-        }
-        return sb.toString();
-    };
-
+    private int makeShift(int i) {
+        return (i - 'a' + shift) % abc.length() + 'a';
+    }
 }
