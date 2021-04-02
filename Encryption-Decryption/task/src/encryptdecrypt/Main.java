@@ -1,55 +1,106 @@
 package encryptdecrypt;
 
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(new EncDec4(args).getResult());
+        new EncDec5(args).doWork();
     }
 }
 
-class EncDec4 {
+class EncDec5 {
 
     static final String MODE = "-mode";
     static final String KEY = "-key";
     static final String DATA = "-data";
+    static final String IN = "-in";
+    static final String OUT = "-out";
+    static final List<String> keys = List.of(MODE, KEY, DATA, IN, OUT);
+
     static final String ENC = "enc";
 
     static final Map<String, String> defaultParams = Map.of(
             MODE, ENC,
             KEY, "0",
-            DATA, ""
+            DATA, "",
+            IN, "",
+            OUT, ""
     );
 
     private final Map<String, String> params;
+    private boolean error;
+    private String result;
 
-    public EncDec4(String[] args) {
+    public EncDec5(String[] args) {
         params = parseCLIParams(args);
     }
 
-    public static Map<String, String> parseCLIParams(String[] args) {
+    private Map<String, String> parseCLIParams(String[] args) {
         int length = args.length;
         int taken = 0;
         Map<String, String> params = new HashMap<>();
         while (taken < length) {
-            params.put(args[taken++], args[taken++]);
+            final String key = args[taken++];
+            if (taken == length) {
+                error = true;
+                break;
+            }
+            final String value = args[taken++];
+            if (keys.contains(value)) {
+                error = true;
+                break;
+            }
+            params.put(key, value);
         }
         return params;
+    }
+
+    public void doWork() {
+        String inputText = getInputText();
+        if (someError()) {
+            return;
+        }
+        final String mode = getParam(MODE);
+        final int key = Integer.parseInt(getParam(KEY));
+        performOperation(mode, inputText, key);
+        outputResult();
+    }
+
+    private boolean someError() {
+        if (error) {
+            System.out.println("Error!");
+        }
+        return error;
     }
 
     private String getParam(String key) {
         return params.getOrDefault(key, defaultParams.get(key));
     }
 
-    public String getResult() {
-        return performOperation(getParam(MODE), getParam(DATA), Integer.parseInt(getParam(KEY)));
+    private String getInputText() {
+        String data = getParam(DATA);
+        if (data.length() > 0) {
+            return data;
+        }
+        String inputFileName = getParam(IN);
+        if (inputFileName.length() > 0) {
+            try(BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
+                return reader.readLine();
+            } catch (Exception e) {
+                error = true;
+                return "";
+            }
+        }
+        return "";
     }
 
-    public static String performOperation(String mode, String s, int shift) {
-        return encDec(s, ENC.equals(mode) ? shift : -shift);
+    private void performOperation(String mode, String s, int key) {
+        result = encDec(s, ENC.equals(mode) ? key : -key);
     }
 
     private static String encDec(String s, int shift) {
@@ -57,5 +108,19 @@ class EncDec4 {
                 .mapToObj(i -> (char) i)
                 .map(String::valueOf)
                 .collect(Collectors.joining(""));
+    }
+
+    private void outputResult() {
+        String outFileName = getParam(OUT);
+        if (outFileName.length() > 0) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName))) {
+                writer.write(result);
+            } catch (IOException e) {
+                error = true;
+                someError();
+            }
+        } else {
+            System.out.println(result);
+        }
     }
 }
