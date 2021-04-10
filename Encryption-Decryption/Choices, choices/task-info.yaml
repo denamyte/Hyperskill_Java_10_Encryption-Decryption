@@ -179,6 +179,37 @@ files:
 
     }
   learner_created: false
+- name: output.txt
+  visible: true
+  text: 111122223333
+  learner_created: true
+- name: src/encryptdecrypt/EncDecTemplate.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/context/EncDecContext.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/context/EncDecStrategy.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/context/ShiftEncDecStrategy.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/context/UnicodeEncDecStrategy.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/InputSupplierFactory.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/OutputConsumerFactory.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/UnicodeEncDecTemplate.java
+  visible: true
+  learner_created: true
+- name: src/encryptdecrypt/ShiftEncDecTemplate.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/46/stages/250/implement#comment
 status: Unchecked
 record: -1

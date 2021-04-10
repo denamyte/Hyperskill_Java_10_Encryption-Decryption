@@ -9,12 +9,13 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        new EncDec5(args).doWork();
+        new EncDec6(args).doWork();
     }
 }
 
-class EncDec5 {
+class EncDec6 {
 
+    static final String ALG = "-alg";
     static final String MODE = "-mode";
     static final String KEY = "-key";
     static final String DATA = "-data";
@@ -23,8 +24,11 @@ class EncDec5 {
     static final List<String> keys = List.of(MODE, KEY, DATA, IN, OUT);
 
     static final String ENC = "enc";
+    static final String SHIFT = "shift";
+    static final String UNICODE = "unicode";
 
     static final Map<String, String> defaultParams = Map.of(
+            ALG, SHIFT,
             MODE, ENC,
             KEY, "0",
             DATA, "",
@@ -36,7 +40,7 @@ class EncDec5 {
     private boolean error;
     private String result;
 
-    public EncDec5(String[] args) {
+    public EncDec6(String[] args) {
         params = parseCLIParams(args);
     }
 
@@ -82,6 +86,7 @@ class EncDec5 {
         return params.getOrDefault(key, defaultParams.get(key));
     }
 
+    // TODO: 4/10/21 make an InputSupplier from this method
     private String getInputText() {
         String data = getParam(DATA);
         if (data.length() > 0) {
@@ -110,6 +115,7 @@ class EncDec5 {
                 .collect(Collectors.joining(""));
     }
 
+    // TODO: 4/10/21 Make and OutputConsumer from this method
     private void outputResult() {
         String outFileName = getParam(OUT);
         if (outFileName.length() > 0) {
