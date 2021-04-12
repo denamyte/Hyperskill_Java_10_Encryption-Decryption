@@ -186,30 +186,18 @@ files:
 - name: src/encryptdecrypt/EncDecTemplate.java
   visible: true
   learner_created: true
-- name: src/encryptdecrypt/context/EncDecContext.java
+- name: src/encryptdecrypt/io/InputSupplierFactory.java
   visible: true
   learner_created: true
-- name: src/encryptdecrypt/context/EncDecStrategy.java
+- name: src/encryptdecrypt/io/OutputConsumerFactory.java
   visible: true
   learner_created: true
-- name: src/encryptdecrypt/context/ShiftEncDecStrategy.java
-  visible: true
-  learner_created: true
-- name: src/encryptdecrypt/context/UnicodeEncDecStrategy.java
-  visible: true
-  learner_created: true
-- name: src/encryptdecrypt/InputSupplierFactory.java
-  visible: true
-  learner_created: true
-- name: src/encryptdecrypt/OutputConsumerFactory.java
-  visible: true
-  learner_created: true
-- name: src/encryptdecrypt/UnicodeEncDecTemplate.java
-  visible: true
-  learner_created: true
-- name: src/encryptdecrypt/ShiftEncDecTemplate.java
+- name: src/encryptdecrypt/EncodingDecodingFactory.java
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/46/stages/250/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Mon, 12 Apr 2021 01:06:51 UTC
 record: -1

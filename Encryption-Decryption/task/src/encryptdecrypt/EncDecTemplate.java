@@ -1,39 +1,44 @@
 package encryptdecrypt;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.*;
 
-public abstract class EncDecTemplate {
+public class EncDecTemplate {
 
     private Supplier<String> inputSupplier;
     private Consumer<String> outputConsumer;
-    protected Integer shift;
+    private Integer shift;
+    private BiFunction<String, Integer, String> endDecAlgorithmFn;
 
     public void work() {
         checkSpareParts();
         String before = inputSupplier.get();
-        String after = encDecAlgorithm(before);
+        String after = endDecAlgorithmFn.apply(before, shift);
         outputConsumer.accept(after);
     }
 
-    public void setInputSupplier(Supplier<String> inputSupplier) {
+    public EncDecTemplate setInputSupplier(Supplier<String> inputSupplier) {
         this.inputSupplier = inputSupplier;
+        return this;
     }
 
-    public void setOutputConsumer(Consumer<String> outputConsumer) {
+    public EncDecTemplate setOutputConsumer(Consumer<String> outputConsumer) {
         this.outputConsumer = outputConsumer;
+        return this;
     }
 
-    public void setShift(boolean encoding, int shift) {
+    public EncDecTemplate setShift(boolean encoding, int shift) {
         this.shift = encoding ? shift : -shift;
+        return this;
+    }
+
+    public EncDecTemplate setEndDecAlgorithmFn(BiFunction<String, Integer, String> endDecAlgorithmFn) {
+        this.endDecAlgorithmFn = endDecAlgorithmFn;
+        return this;
     }
 
     private void checkSpareParts() {
-        if (inputSupplier == null || outputConsumer == null || shift == null) {
+        if (inputSupplier == null || outputConsumer == null || shift == null || endDecAlgorithmFn == null) {
             throw new IllegalArgumentException("Not all parts are set for the algorithm to work");
         }
     }
-
-    protected abstract String encDecAlgorithm(String s);
-
 }

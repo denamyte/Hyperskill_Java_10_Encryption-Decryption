@@ -1,4 +1,4 @@
-package encryptdecrypt;
+package encryptdecrypt.io;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
